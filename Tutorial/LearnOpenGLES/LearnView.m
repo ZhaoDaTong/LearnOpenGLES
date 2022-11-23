@@ -11,6 +11,9 @@
 #import "GLESUtils.h"
 #import "GLESMath.h"
 
+static CGFloat timeUpdate = 0.05;
+static CGFloat degreeUpdate = 5;
+
 @interface LearnView()
 @property (nonatomic , strong) EAGLContext* myContext;
 @property (nonatomic , strong) CAEAGLLayer* myEagLayer;
@@ -46,8 +49,6 @@
     
     [self setupContext];
     
-    
-    
     [self destoryRenderAndFrameBuffer];
     
     [self setupRenderBuffer];
@@ -56,20 +57,19 @@
     
     
     
-    [self render]; 
+    [self render];
 }
 
 - (IBAction)onTimer:(id)sender {
     if (!myTimer) {
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(onRes:) userInfo:nil repeats:YES];
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:timeUpdate target:self selector:@selector(onRes:) userInfo:nil repeats:YES];
     }
     bX = !bX;
 }
 
-
 - (IBAction)onYTimer:(id)sender {
     if (!myTimer) {
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(onRes:) userInfo:nil repeats:YES];
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:timeUpdate target:self selector:@selector(onRes:) userInfo:nil repeats:YES];
     }
     bY = !bY;
 }
@@ -80,17 +80,17 @@
     [self render];
 }
 
-
-
 - (void)onRes:(id)sender {
-    degree += bX * 5;
-    yDegree += bY * 5;
+    degree += bX * degreeUpdate;
+    yDegree += bY * degreeUpdate;
     [self render];
 }
 
 
 - (void)render {
-    glClearColor(0, 0.0, 0, 1.0);
+    glEnable(GL_DEPTH_TEST);
+    
+    glClearColor(0, 1.0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     CGFloat scale = [[UIScreen mainScreen] scale];
@@ -118,37 +118,28 @@
     }
     glUseProgram(self.myProgram);
     
+    CGFloat defaultPointValue = 0.5f;
     
+    // 顶点及颜色数组
     GLfloat attrArr[] =
     {
-        -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, //左上
-        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, //右上
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, //左下
-        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, //右下
-        0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, //顶点
+        -defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //左上
+        defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //右上
+        -defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //左下
+        defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //右下
+        0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, //顶点
     };
     
+    // 索引数组，三个点组成一个三角形
     GLuint indices[] =
     {
         0, 3, 2,
         0, 1, 3,
         0, 2, 4,
         0, 4, 1,
-        2, 3, 4, //??
+        2, 3, 4,
         1, 4, 3,
     };
-
-//    GLuint indices[] =
-//    {
-//        0, 4,
-//        0, 2,
-//        0, 1,
-//        1, 3,
-//        1, 4,
-//        2, 3,
-//        2, 4,
-//        3, 4
-//    };
     
     GLuint attrBuffer;
     glGenBuffers(1, &attrBuffer);
@@ -175,49 +166,42 @@
     
     // Generate a perspective matrix with a 60 degree FOV
 
+    // 初始化原始3D变换矩阵
     KSMatrix4 _projectionMatrix;
     ksMatrixLoadIdentity(&_projectionMatrix);
+    
+    ksTranslate(&_projectionMatrix, 0.3, 0.3, 0.0);
+    // 根据显示大小更改原始矩阵
     float aspect = width / height;
+    ksPerspective(&_projectionMatrix, 30.0, aspect, -25.0f, 20.0f); //透视变换
     
-    ksPerspective(&_projectionMatrix, 30.0, aspect, -5.0f, 20.0f); //透视变换
+//    ksRotate(&_projectionMatrix, degree, 1.0, 0.0, 0.0);
+//    ksRotate(&_projectionMatrix, yDegree, 0.0, 1.0, 0.0);
     
-    // Load projection matrix
+    // Load projection matrix，绑定原始矩阵数据到vertex program
     glUniformMatrix4fv(projectionMatrixSlot, 1, GL_FALSE, (GLfloat*)&_projectionMatrix.m[0][0]);
     
-//    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-//    glDepthMask(GL_TRUE);
     
-    
+    // 初始化变换3D变换矩阵
     KSMatrix4 _modelViewMatrix;
     ksMatrixLoadIdentity(&_modelViewMatrix);
-    
+    // 移动变换矩阵
     ksTranslate(&_modelViewMatrix, 0.0, 0.0, 0.0);
-    
-    KSMatrix4 _rotationMatrix;
-    ksMatrixLoadIdentity(&_rotationMatrix);
-    
     ksRotate(&_modelViewMatrix, degree, 1.0, 0.0, 0.0);
     ksRotate(&_modelViewMatrix, yDegree, 0.0, 1.0, 0.0);
     
-    
-    ksMatrixMultiply(&_modelViewMatrix, &_rotationMatrix, &_modelViewMatrix);
-    
+//    // 作用？注释后与原始效果无改变
+//    KSMatrix4 _rotationMatrix;
+//    ksMatrixLoadIdentity(&_rotationMatrix);
+//    ksMatrixMultiply(&_modelViewMatrix, &_rotationMatrix, &_modelViewMatrix);
+
     // Load the model-view matrix
     glUniformMatrix4fv(modelViewMatrixSlot, 1, GL_FALSE, (GLfloat*)&_modelViewMatrix.m[0][0]);
     
-
-    
-    
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
     glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, indices);
     
     [self.myContext presentRenderbuffer:GL_RENDERBUFFER];
 }
-
-
-
-
 
 - (GLuint)loadShaders:(NSString *)vert frag:(NSString *)frag {
     GLuint verShader, fragShader;
@@ -258,7 +242,7 @@
     
     // 设置描绘属性，在这里设置不维持渲染内容以及颜色格式为 RGBA8
     self.myEagLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithBool:NO], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];    
+                                     [NSNumber numberWithBool:NO], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
 }
 
 
@@ -295,11 +279,7 @@
     self.myDepthRenderBuffer = buffer;
     glBindRenderbuffer(GL_RENDERBUFFER, self.myDepthRenderBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
-    
-    
-
 }
-
 
 - (void)setupFrameBuffer {
     GLuint buffer;
@@ -317,7 +297,6 @@
     glBindRenderbuffer(GL_RENDERBUFFER, self.myColorRenderBuffer);
 }
 
-
 - (void)destoryRenderAndFrameBuffer
 {
     glDeleteFramebuffers(1, &_myFrameRenderBuffer);
@@ -328,46 +307,4 @@
     self.myDepthRenderBuffer = 0;
 }
 
-
-
-
-- (GLuint)setupTexture:(NSString *)fileName {
-    // 1
-    CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
-    if (!spriteImage) {
-        NSLog(@"Failed to load image %@", fileName);
-        exit(1);
-    }
-    
-    // 2
-    size_t width = CGImageGetWidth(spriteImage);
-    size_t height = CGImageGetHeight(spriteImage);
-    
-    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
-    
-    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
-                                                       CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
-    
-    // 3
-    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
-    
-    CGContextRelease(spriteContext);
-    
-    // 4
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
-    float fw = width, fh = height;
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fw, fh, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
-    
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    free(spriteData);
-    return 0;
-}
 @end
