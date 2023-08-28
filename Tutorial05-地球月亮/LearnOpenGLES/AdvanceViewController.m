@@ -56,13 +56,6 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
     
     [self configureLight];
     
-    
-    
-//    
-//    GLfloat   aspectRatio =
-//    (self.view.bounds.size.width * self.view.contentScaleFactor) /
-//    (self.view.bounds.size.height * self.view.contentScaleFactor);
-    
     GLfloat   aspectRatio =
     (self.view.bounds.size.width) /
     (self.view.bounds.size.height);
@@ -99,21 +92,9 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
 - (void)configureLight
 {
     self.baseEffect.light0.enabled = GL_TRUE;
-    self.baseEffect.light0.diffuseColor = GLKVector4Make(
-                                                         1.0f, // Red
-                                                         1.0f, // Green
-                                                         1.0f, // Blue
-                                                         1.0f);// Alpha
-    self.baseEffect.light0.position = GLKVector4Make(
-                                                     1.0f,  
-                                                     0.0f,  
-                                                     0.8f,  
-                                                     0.0f);
-    self.baseEffect.light0.ambientColor = GLKVector4Make(
-                                                         0.2f, // Red 
-                                                         0.2f, // Green 
-                                                         0.2f, // Blue 
-                                                         1.0f);// Alpha 
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
+    self.baseEffect.light0.position = GLKVector4Make(1.0f, 0.0f, 0.8f, 0.0f);
+    self.baseEffect.light0.ambientColor = GLKVector4Make(0.2f, 0.2f, 0.2f, 1.0f);
 }
 
 
@@ -128,6 +109,7 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
 
 - (void)bufferData {
     
+    // 初始化transform 栈
     self.modelviewMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
     
     //顶点数据缓存
@@ -136,11 +118,13 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
                                  numberOfVertices:sizeof(sphereVerts) / (3 * sizeof(GLfloat))
                                  bytes:sphereVerts
                                  usage:GL_STATIC_DRAW];
+    //顶点法向量数据缓存
     self.vertexNormalBuffer = [[AGLKVertexAttribArrayBuffer alloc]
                                initWithAttribStride:(3 * sizeof(GLfloat))
                                numberOfVertices:sizeof(sphereNormals) / (3 * sizeof(GLfloat))
                                bytes:sphereNormals
                                usage:GL_STATIC_DRAW];
+    //纹理数据缓存
     self.vertexTextureCoordBuffer = [[AGLKVertexAttribArrayBuffer alloc]
                                      initWithAttribStride:(2 * sizeof(GLfloat))
                                      numberOfVertices:sizeof(sphereTexCoords) / (2 * sizeof(GLfloat))
@@ -195,10 +179,7 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
      */
     GLKMatrixStackPush(self.modelviewMatrixStack);
     
-    GLKMatrixStackRotate(
-                         self.modelviewMatrixStack,
-                         GLKMathDegreesToRadians(SceneEarthAxialTiltDeg),
-                         1.0, 0.0, 0.0);
+    GLKMatrixStackRotate(self.modelviewMatrixStack, GLKMathDegreesToRadians(SceneEarthAxialTiltDeg), 1.0, 0.0, 0.0);
     /*
      current matrix:
      1.000000 0.000000 0.000000 0.000000
@@ -207,10 +188,7 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
      0.000000 0.000000 -5.000000 1.000000
      */
     
-    GLKMatrixStackRotate(
-                         self.modelviewMatrixStack,
-                         GLKMathDegreesToRadians(self.earthRotationAngleDegrees),
-                         0.0, 1.0, 0.0);
+    GLKMatrixStackRotate(self.modelviewMatrixStack, GLKMathDegreesToRadians(self.earthRotationAngleDegrees), 0.0, 1.0, 0.0);
     /*
      current matrix:
      0.994522 0.041681 -0.095859 0.000000
@@ -259,22 +237,9 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
     
     GLKMatrixStackPush(self.modelviewMatrixStack);
     
-    GLKMatrixStackRotate(
-                         self.modelviewMatrixStack,
-                         GLKMathDegreesToRadians(self.moonRotationAngleDegrees),
-                         0.0, 1.0, 0.0);
-    GLKMatrixStackTranslate(
-                            self.modelviewMatrixStack,
-                            0.0, 0.0, SceneMoonDistanceFromEarth);
-    GLKMatrixStackScale(
-                        self.modelviewMatrixStack,
-                        SceneMoonRadiusFractionOfEarth,
-                        SceneMoonRadiusFractionOfEarth,
-                        SceneMoonRadiusFractionOfEarth);
-    GLKMatrixStackRotate(
-                         self.modelviewMatrixStack,
-                         GLKMathDegreesToRadians(self.moonRotationAngleDegrees),
-                         0.0, 1.0, 0.0);
+    GLKMatrixStackRotate(self.modelviewMatrixStack, GLKMathDegreesToRadians(self.moonRotationAngleDegrees), 0.0, 1.0, 0.0);
+    GLKMatrixStackTranslate(self.modelviewMatrixStack, 0.0, 0.0, SceneMoonDistanceFromEarth);
+    GLKMatrixStackScale(self.modelviewMatrixStack, SceneMoonRadiusFractionOfEarth, SceneMoonRadiusFractionOfEarth, SceneMoonRadiusFractionOfEarth);
     
     self.baseEffect.transform.modelviewMatrix =
     GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
@@ -352,6 +317,7 @@ static const GLfloat  SceneMoonDistanceFromEarth = 2.0;
     self.earthRotationAngleDegrees += 360.0f / 60.0f;
     self.moonRotationAngleDegrees += (360.0f / 60.0f) / SceneDaysPerMoonOrbit;
     
+    // 关联顶点相关数据
     [self.vertexPositionBuffer
      prepareToDrawWithAttrib:GLKVertexAttribPosition
      numberOfCoordinates:3
