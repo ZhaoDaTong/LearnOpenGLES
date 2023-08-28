@@ -37,6 +37,8 @@ static CGFloat degreeUpdate = 5;
     NSTimer* myTimer;
     
     float saturation;
+    
+    GLint attrBuffer;
 }
 
 + (Class)layerClass {
@@ -55,7 +57,8 @@ static CGFloat degreeUpdate = 5;
     
     [self setupFrameBuffer];
     
-    
+    attrBuffer = [self createBufferData];
+    [self createProgram];
     
     [self render];
 }
@@ -86,6 +89,46 @@ static CGFloat degreeUpdate = 5;
     [self render];
 }
 
+- (void)createProgram {
+    NSString* vertFile = [[NSBundle mainBundle] pathForResource:@"shaderv" ofType:@"glsl"];
+    NSString* fragFile = [[NSBundle mainBundle] pathForResource:@"shaderf" ofType:@"glsl"];
+    
+    self.myProgram = [self loadShaders:vertFile frag:fragFile];
+    
+    glLinkProgram(self.myProgram);
+    GLint linkSuccess;
+    glGetProgramiv(self.myProgram, GL_LINK_STATUS, &linkSuccess);
+    if (linkSuccess == GL_FALSE) {
+        // 获取program link 错误状态
+        GLchar messages[256];
+        glGetProgramInfoLog(self.myProgram, sizeof(messages), 0, &messages[0]);
+        NSString *messageString = [NSString stringWithUTF8String:messages];
+        NSLog(@"error%@", messageString);
+
+        return;
+    }
+    
+    glUseProgram(self.myProgram);
+}
+
+- (GLint)createBufferData {
+    CGFloat defaultPointValue = 0.3f;
+    // 顶点及颜色数组
+    GLfloat attrArr[] =
+    {
+        -defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //左上
+        defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //右上
+        -defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //左下
+        defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //右下
+        0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, //顶点
+    };
+    
+    GLuint attrBuffer;
+    glGenBuffers(1, &attrBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, attrBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(attrArr), attrArr, GL_DYNAMIC_DRAW);
+    return attrBuffer;
+}
 
 - (void)render {
     glEnable(GL_DEPTH_TEST);
@@ -96,55 +139,7 @@ static CGFloat degreeUpdate = 5;
     CGFloat scale = [[UIScreen mainScreen] scale];
     glViewport(self.frame.origin.x * scale, self.frame.origin.y * scale, self.frame.size.width * scale, self.frame.size.height * scale);
     
-    
-    NSString* vertFile = [[NSBundle mainBundle] pathForResource:@"shaderv" ofType:@"glsl"];
-    NSString* fragFile = [[NSBundle mainBundle] pathForResource:@"shaderf" ofType:@"glsl"];
-    
-    self.myProgram = [self loadShaders:vertFile frag:fragFile];
-    
-    glLinkProgram(self.myProgram);
-    GLint linkSuccess;
-    glGetProgramiv(self.myProgram, GL_LINK_STATUS, &linkSuccess);
-    if (linkSuccess == GL_FALSE) {
-        GLchar messages[256];
-        glGetProgramInfoLog(self.myProgram, sizeof(messages), 0, &messages[0]);
-        NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog(@"error%@", messageString);
-
-        return ;
-    }
-    else {
-//        NSLog(@"ok");
-    }
-    glUseProgram(self.myProgram);
-    
-    CGFloat defaultPointValue = 0.5f;
-    
-    // 顶点及颜色数组
-    GLfloat attrArr[] =
-    {
-        -defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //左上
-        defaultPointValue, defaultPointValue, 0.0f, 1.0f, 0.0f, 1.0f, //右上
-        -defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //左下
-        defaultPointValue, -defaultPointValue, 0.0f, 1.0f, 1.0f, 1.0f, //右下
-        0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, //顶点
-    };
-    
-    // 索引数组，三个点组成一个三角形
-    GLuint indices[] =
-    {
-        0, 3, 2,
-        0, 1, 3,
-        0, 2, 4,
-        0, 4, 1,
-        2, 3, 4,
-        1, 4, 3,
-    };
-    
-    GLuint attrBuffer;
-    glGenBuffers(1, &attrBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, attrBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(attrArr), attrArr, GL_DYNAMIC_DRAW);
     
     GLuint position = glGetAttribLocation(self.myProgram, "position");
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, NULL);
@@ -173,13 +168,10 @@ static CGFloat degreeUpdate = 5;
     ksTranslate(&_projectionMatrix, 0.3, 0.3, 0.0);
     // 根据显示大小更改原始矩阵
     float aspect = width / height;
-    ksPerspective(&_projectionMatrix, 30.0, aspect, -25.0f, 20.0f); //透视变换
-    
-//    ksRotate(&_projectionMatrix, degree, 1.0, 0.0, 0.0);
-//    ksRotate(&_projectionMatrix, yDegree, 0.0, 1.0, 0.0);
+    ksPerspective(&_projectionMatrix, 30.0, aspect, -25.0f, -20.0f); //透视变换
     
     // Load projection matrix，绑定原始矩阵数据到vertex program
-    glUniformMatrix4fv(projectionMatrixSlot, 1, GL_FALSE, (GLfloat*)&_projectionMatrix.m[0][0]);
+    glUniformMatrix4fv(projectionMatrixSlot, 1, GL_FALSE, (GLfloat*)&_projectionMatrix);
     
     
     // 初始化变换3D变换矩阵
@@ -189,15 +181,20 @@ static CGFloat degreeUpdate = 5;
     ksTranslate(&_modelViewMatrix, 0.0, 0.0, 0.0);
     ksRotate(&_modelViewMatrix, degree, 1.0, 0.0, 0.0);
     ksRotate(&_modelViewMatrix, yDegree, 0.0, 1.0, 0.0);
-    
-//    // 作用？注释后与原始效果无改变
-//    KSMatrix4 _rotationMatrix;
-//    ksMatrixLoadIdentity(&_rotationMatrix);
-//    ksMatrixMultiply(&_modelViewMatrix, &_rotationMatrix, &_modelViewMatrix);
 
     // Load the model-view matrix
-    glUniformMatrix4fv(modelViewMatrixSlot, 1, GL_FALSE, (GLfloat*)&_modelViewMatrix.m[0][0]);
+    glUniformMatrix4fv(modelViewMatrixSlot, 1, GL_FALSE, (GLfloat*)&_modelViewMatrix);
     
+    // 索引数组，三个点组成一个三角形
+    GLuint indices[] =
+    {
+        0, 3, 2,
+        0, 1, 3,
+        0, 2, 4,
+        0, 4, 1,
+        2, 3, 4,
+        1, 4, 3,
+    };
     glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, indices);
     
     [self.myContext presentRenderbuffer:GL_RENDERBUFFER];

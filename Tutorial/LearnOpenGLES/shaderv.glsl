@@ -11,8 +11,6 @@ void main()
     
     vec4 vPos;
     vPos = projectionMatrix * modelViewMatrix * position;
-    
-//    vPos = position;
 
     gl_Position = vPos;
 }
