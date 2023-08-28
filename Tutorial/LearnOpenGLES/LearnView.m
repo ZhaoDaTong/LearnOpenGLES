@@ -38,7 +38,9 @@ static CGFloat degreeUpdate = 5;
     
     float saturation;
     
-    GLint attrBuffer;
+    GLuint attrBuffer;
+    GLuint indicesBuffer;
+    GLsizei indicesCount;
 }
 
 + (Class)layerClass {
@@ -58,6 +60,8 @@ static CGFloat degreeUpdate = 5;
     [self setupFrameBuffer];
     
     attrBuffer = [self createBufferData];
+    indicesBuffer = [self createIndicesBufferData];
+    
     [self createProgram];
     
     [self render];
@@ -111,7 +115,7 @@ static CGFloat degreeUpdate = 5;
     glUseProgram(self.myProgram);
 }
 
-- (GLint)createBufferData {
+- (GLuint)createBufferData {
     CGFloat defaultPointValue = 0.3f;
     // 顶点及颜色数组
     GLfloat attrArr[] =
@@ -128,6 +132,25 @@ static CGFloat degreeUpdate = 5;
     glBindBuffer(GL_ARRAY_BUFFER, attrBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(attrArr), attrArr, GL_DYNAMIC_DRAW);
     return attrBuffer;
+}
+
+- (GLuint)createIndicesBufferData {
+    GLuint indices[] =
+    {
+        0, 3, 2,
+        0, 1, 3,
+        0, 2, 4,
+        0, 4, 1,
+        2, 3, 4,
+        1, 4, 3,
+    };
+    GLuint indexBuffer;
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    
+    indicesCount = sizeof(indices) / sizeof(indices[0]);
+    return indexBuffer;
 }
 
 - (void)render {
@@ -185,17 +208,8 @@ static CGFloat degreeUpdate = 5;
     // Load the model-view matrix
     glUniformMatrix4fv(modelViewMatrixSlot, 1, GL_FALSE, (GLfloat*)&_modelViewMatrix);
     
-    // 索引数组，三个点组成一个三角形
-    GLuint indices[] =
-    {
-        0, 3, 2,
-        0, 1, 3,
-        0, 2, 4,
-        0, 4, 1,
-        2, 3, 4,
-        1, 4, 3,
-    };
-    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, indices);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
+    glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
     
     [self.myContext presentRenderbuffer:GL_RENDERBUFFER];
 }
