@@ -1,14 +1,13 @@
 
 // VERTEX ATTRIBUTES
 attribute vec3 a_emissionPosition; //位置
-attribute vec3 a_emissionVelocity; //速度
+attribute vec3 a_emissionVelocity; //初始速度
 attribute vec3 a_emissionForce; //受力
 attribute vec2 a_size;  //大小 和 Fade持续时间  size = GLKVector2Make(aSize, aDuration);
 attribute vec2 a_emissionAndDeathTimes; //发射时间 和 消失时间
 
 // UNIFORMS
 uniform highp mat4      u_mvpMatrix; //变换矩阵
-uniform sampler2D       u_samplers2D[1]; //纹理
 uniform highp vec3      u_gravity; //重力
 uniform highp float     u_elapsedSeconds; //当前时间
 
@@ -19,6 +18,7 @@ varying lowp float      v_particleOpacity; //粒子 不透明度
 
 void main()
 {
+    // 当前时间 - 开始时间，得到流逝时间
     highp float elapsedTime = u_elapsedSeconds - a_emissionAndDeathTimes.x; //流逝时间
     
     // 质量假设是1.0 加速度 = 力 (a = f/m)
@@ -26,6 +26,7 @@ void main()
     //               a 是加速度; t 是时间
     highp vec3 velocity = a_emissionVelocity +
     ((a_emissionForce + u_gravity) * elapsedTime);
+    // a_emissionVelocity 不变，elapsedTime 越变越大， ((a_emissionForce + u_gravity) * elapsedTime) 越变越大
     
     // s = s0 + 0.5 * (v0 + v) * t : s 当前位置
     //                              s0 初始位置

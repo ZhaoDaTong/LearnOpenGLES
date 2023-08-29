@@ -23,6 +23,8 @@
 @property (strong, nonatomic) NSArray *emitterBlocks;
 @property (strong, nonatomic) GLKTextureInfo *ballParticleTexture;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segementControl;
+
 @property (nonatomic , assign) long mElapseTime;
 @end
 
@@ -31,6 +33,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.currentEmitterIndex = 1;
+    self.segementControl.selectedSegmentIndex = self.currentEmitterIndex;
+    
+//    for (int i = 0; i < 10000; i++) {
+//        float randomValue = 1.0f *
+//        (float)random() / (float)RAND_MAX;
+//        // randomValue 范围 0< randomValue < 1.0
+//        NSLog(@"randomValue %f", randomValue);
+//        float randomXVelocity = -0.5f + randomValue;
+//        // randomXVelocity 范围 -0.5f < randomXVelocity < 0.5f
+//        NSLog(@"randomXVelocity %f", randomXVelocity);
+//    }
     
     self.mElapseTime = 0;
     
@@ -67,7 +82,7 @@
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     self.emitterBlocks = [NSArray arrayWithObjects:[^{  // 1
-        self.autoSpawnDelta = 0.5f;
+        self.autoSpawnDelta = 0.05f;
         
         self.particleEffect.gravity = AGLKDefaultGravity;
         
@@ -75,7 +90,7 @@
         (float)random() / (float)RAND_MAX;
         
         [self.particleEffect
-         addParticleAtPosition:GLKVector3Make(0.0f, 0.0f, 0.9f)
+         addParticleAtPosition:GLKVector3Make(0.0f, 0.0f, 0.0f)
          velocity:GLKVector3Make(randomXVelocity, 1.0f, -1.0f)
          force:GLKVector3Make(0.0f, 9.0f, 0.0f)
          size:4.0f
