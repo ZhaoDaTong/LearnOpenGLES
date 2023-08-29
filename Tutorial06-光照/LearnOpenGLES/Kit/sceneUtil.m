@@ -222,6 +222,7 @@ void SceneTrianglesNormalLinesUpdate(
                       GLKVector3MultiplyScalar(
                                                someTriangles[trianglesIndex].vertices[0].normal,
                                                0.5));
+        
         someNormalLineVertices[lineVetexIndex++] =
         someTriangles[trianglesIndex].vertices[1].position;
         someNormalLineVertices[lineVetexIndex++] =
@@ -230,6 +231,7 @@ void SceneTrianglesNormalLinesUpdate(
                       GLKVector3MultiplyScalar(
                                                someTriangles[trianglesIndex].vertices[1].normal,
                                                0.5));
+        
         someNormalLineVertices[lineVetexIndex++] =
         someTriangles[trianglesIndex].vertices[2].position;
         someNormalLineVertices[lineVetexIndex++] =

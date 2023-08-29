@@ -962,7 +962,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0730;
-				ORGANIZATIONNAME = "loyinglin";
+				ORGANIZATIONNAME = loyinglin;
 				TargetAttributes = {
 					FD1FD4D91D5B2D5300E098A9 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -978,6 +978,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1259,7 +1260,7 @@
 					"$(PROJECT_DIR)/OpenGL/GLTools",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_BUNDLE_IDENTIFIER = loying.lin.OpenGL;
+				PRODUCT_BUNDLE_IDENTIFIER = com.loying.lin.OpenGL10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1282,7 +1283,7 @@
 					"$(PROJECT_DIR)/OpenGL/GLTools",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_BUNDLE_IDENTIFIER = loying.lin.OpenGL;
+				PRODUCT_BUNDLE_IDENTIFIER = com.loying.lin.OpenGL10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

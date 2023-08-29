@@ -65,25 +65,16 @@
                                                      0.0f);
     
     self.extraEffect = [[GLKBaseEffect alloc] init];
-    self.extraEffect.useConstantColor = GL_TRUE;
     
     //尝试注释变换
-    if (true) {
-        
-        GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(
-                                                            GLKMathDegreesToRadians(-60.0f), 1.0f, 0.0f, 0.0f);
-        modelViewMatrix = GLKMatrix4Rotate(
-                                           modelViewMatrix,
-                                           GLKMathDegreesToRadians(-30.0f), 0.0f, 0.0f, 1.0f);
-        modelViewMatrix = GLKMatrix4Translate(
-                                              modelViewMatrix,
-                                              0.0f, 0.0f, 0.25f);
+    {
+        GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(-60.0f), 1.0f, 0.0f, 0.0f);
+        modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, GLKMathDegreesToRadians(-30.0f), 0.0f, 0.0f, 1.0f);
+        modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, 0.0f, 0.0f, 0.25f);
         
         self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
         self.extraEffect.transform.modelviewMatrix = modelViewMatrix;
-        
     }
-    
     
     [self setClearColor:GLKVector4Make(
                                        0.0f, // Red
@@ -116,6 +107,7 @@
     
     self.centerVertexHeight = 0.0f;
     self.shouldUseFaceNormals = YES;
+    self.shouldDrawNormals = true;
     
 }
 - (void)didReceiveMemoryWarning {
@@ -148,9 +140,7 @@
 {
     GLKVector3  normalLineVertices[NUM_LINE_VERTS];
     
-    SceneTrianglesNormalLinesUpdate(triangles,
-                                    GLKVector3MakeWithArray(self.baseEffect.light0.position.v),
-                                    normalLineVertices);
+    SceneTrianglesNormalLinesUpdate(triangles, GLKVector3MakeWithArray(self.baseEffect.light0.position.v), normalLineVertices);
     
     [self.extraBuffer reinitWithAttribStride:sizeof(GLKVector3)
                             numberOfVertices:NUM_LINE_VERTS
