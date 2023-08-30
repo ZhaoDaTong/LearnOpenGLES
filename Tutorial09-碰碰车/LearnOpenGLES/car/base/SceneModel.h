@@ -22,6 +22,7 @@ SceneAxisAllignedBoundingBox;
 
 @property (copy, nonatomic, readonly) NSString
    *name;
+// Scene边界框
 @property (assign, nonatomic, readonly) 
    SceneAxisAllignedBoundingBox axisAlignedBoundingBox;
 

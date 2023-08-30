@@ -66,7 +66,11 @@ static const int SceneNumberOfPOVAnimationSeconds = 2.0;
                                                      0.8f,
                                                      0.4f,
                                                      0.0f);
-    
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(
+                                                         1.0f, // Red
+                                                         1.0f, // Green
+                                                         1.0f, // Blue
+                                                         1.0f);// Alpha
     
     self.carModel = [[SceneCarModel alloc] init];
     self.rinkModel = [[SceneRinkModel alloc] init];
@@ -80,35 +84,68 @@ static const int SceneNumberOfPOVAnimationSeconds = 2.0;
                   self.rinkBoundingBox.min.z),
              @"Rink has no area");
     
+//    {
+//        SceneCar   *newCar = [[SceneCar alloc]
+//                              initWithModel:self.carModel
+//                              position:GLKVector3Make(1.0, 0.0, 1.0)
+//                              velocity:GLKVector3Make(1.5, 0.0, 1.5)
+//                              color:GLKVector4Make(0.0, 0.5, 0.0, 1.0)];
+//        [cars addObject:newCar];
+//
+//        newCar = [[SceneCar alloc]
+//                  initWithModel:self.carModel
+//                  position:GLKVector3Make(-1.0, 0.0, 1.0)
+//                  velocity:GLKVector3Make(-1.5, 0.0, 1.5)
+//                  color:GLKVector4Make(0.5, 0.5, 0.0, 1.0)];
+//        [cars addObject:newCar];
+//
+//        newCar = [[SceneCar alloc]
+//                  initWithModel:self.carModel
+//                  position:GLKVector3Make(1.0, 0.0, -1.0)
+//                  velocity:GLKVector3Make(-1.5, 0.0, -1.5)
+//                  color:GLKVector4Make(0.5, 0.0, 0.0, 1.0)];
+//        [cars addObject:newCar];
+//
+//        newCar = [[SceneCar alloc]
+//                  initWithModel:self.carModel
+//                  position:GLKVector3Make(2.0, 0.0, -2.0)
+//                  velocity:GLKVector3Make(-1.5, 0.0, -0.5)
+//                  color:GLKVector4Make(0.3, 0.0, 0.3, 1.0)];
+//        newCar.mCarId = 3;
+//        [cars addObject:newCar];
+//    }
     
-    SceneCar   *newCar = [[SceneCar alloc]
-                          initWithModel:self.carModel
-                          position:GLKVector3Make(1.0, 0.0, 1.0)
-                          velocity:GLKVector3Make(1.5, 0.0, 1.5)
-                          color:GLKVector4Make(0.0, 0.5, 0.0, 1.0)];
-    [cars addObject:newCar];
+    {
+        SceneCar   *newCar = [[SceneCar alloc]
+                              initWithModel:self.carModel
+                              position:GLKVector3Make(1.0, 0.0, 1.0)
+                              velocity:GLKVector3Make(1.5, 0.0, 1.5)
+                              color:GLKVector4Make(0.0, 0.5, 0.0, 1.0)];
+        [cars addObject:newCar];
+        
+        newCar = [[SceneCar alloc]
+                  initWithModel:self.carModel
+                  position:GLKVector3Make(-1.0, 0.0, 1.0)
+                  velocity:GLKVector3Make(-1.5, 0.0, 1.5)
+                  color:GLKVector4Make(0.5, 0.5, 0.0, 1.0)];
+        [cars addObject:newCar];
+        
+        newCar = [[SceneCar alloc]
+                  initWithModel:self.carModel
+                  position:GLKVector3Make(1.0, 0.0, -1.0)
+                  velocity:GLKVector3Make(-1.5, 0.0, -1.5)
+                  color:GLKVector4Make(0.5, 0.0, 0.0, 1.0)];
+        [cars addObject:newCar];
+        
+        newCar = [[SceneCar alloc]
+                  initWithModel:self.carModel
+                  position:GLKVector3Make(2.0, 0.0, -2.0)
+                  velocity:GLKVector3Make(-1.5, 0.0, -0.5)
+                  color:GLKVector4Make(0.3, 0.0, 0.3, 1.0)];
+        newCar.mCarId = 3;
+        [cars addObject:newCar];
+    }
     
-    newCar = [[SceneCar alloc]
-              initWithModel:self.carModel
-              position:GLKVector3Make(-1.0, 0.0, 1.0)
-              velocity:GLKVector3Make(-1.5, 0.0, 1.5)
-              color:GLKVector4Make(0.5, 0.5, 0.0, 1.0)];
-    [cars addObject:newCar];
-    
-    newCar = [[SceneCar alloc]
-              initWithModel:self.carModel
-              position:GLKVector3Make(1.0, 0.0, -1.0)
-              velocity:GLKVector3Make(-1.5, 0.0, -1.5)
-              color:GLKVector4Make(0.5, 0.0, 0.0, 1.0)];
-    [cars addObject:newCar];
-    
-    newCar = [[SceneCar alloc]
-              initWithModel:self.carModel
-              position:GLKVector3Make(2.0, 0.0, -2.0)
-              velocity:GLKVector3Make(-1.5, 0.0, -0.5)
-              color:GLKVector4Make(0.3, 0.0, 0.3, 1.0)];
-    newCar.mCarId = 3;
-    [cars addObject:newCar];
     
     self.eyePosition = GLKVector3Make(10.5, 5.0, 0.0);
     self.lookAtPosition = GLKVector3Make(0.0, 0.5, 0.0);
@@ -175,12 +212,6 @@ static const int SceneNumberOfPOVAnimationSeconds = 2.0;
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    self.baseEffect.light0.diffuseColor = GLKVector4Make(
-                                                         1.0f, // Red
-                                                         1.0f, // Green
-                                                         1.0f, // Blue
-                                                         1.0f);// Alpha
 
     const GLfloat  aspectRatio =
     (GLfloat)view.drawableWidth / (GLfloat)view.drawableHeight;
@@ -244,12 +275,12 @@ static const int SceneNumberOfPOVAnimationSeconds = 2.0;
 
 - (IBAction)onSlow:(id)sender {
     SceneCar* car = [cars lastObject];
-    [car onSpeedChange:YES];
+    [car onSpeedChangeWithIsSlow:YES];
 }
 
 - (IBAction)onFast:(id)sender {
     SceneCar* car = [cars lastObject];
-    [car onSpeedChange:NO];
+    [car onSpeedChangeWithIsSlow:NO];
 }
 
 @end

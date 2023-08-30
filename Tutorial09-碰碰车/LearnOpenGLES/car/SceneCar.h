@@ -48,7 +48,7 @@
 
 + (long)getBounceCount;
 
-- (void)onSpeedChange:(BOOL)slow;
+- (void)onSpeedChangeWithIsSlow:(BOOL)slow;
 
 @end
 

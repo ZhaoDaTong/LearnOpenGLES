@@ -130,22 +130,28 @@ static long bounceCount;
 //检测cars之间的碰撞
 - (void)bounceOffCars:(NSArray *)cars elapsedTime:(NSTimeInterval)elapsedTimeSeconds
 {
+    // 遍历所有car与当前car之前的碰撞
     for(SceneCar *currentCar in cars)
     {
         if(currentCar != self)
         {
+            // 得到两个car nextPosition 之间的距离
             float distance = GLKVector3Distance(self.nextPosition, currentCar.nextPosition);
             
+            // 距离小于一个car width时，发生碰撞，进行速度更新
             if((2.0f * self.radius) > distance)
             {
                 ++bounceCount;
+                // 得到两个car 的速度
                 GLKVector3 ownVelocity = self.velocity;
                 GLKVector3 otherVelocity = currentCar.velocity;
-                GLKVector3 directionToOtherCar = GLKVector3Subtract(currentCar.position, self.position);
+                // 得到两个car position 之间的距离
+                GLKVector3 directionToOtherCarO = GLKVector3Subtract(currentCar.position, self.position);
                 
-                directionToOtherCar = GLKVector3Normalize(directionToOtherCar);
+                // GLKVector3Normalize 向量规范化，也就是转成单位向量
+                GLKVector3 directionToOtherCar = GLKVector3Normalize(directionToOtherCarO);
                 GLKVector3 negDirectionToOtherCar = GLKVector3Negate(directionToOtherCar);
-                
+
                 GLKVector3 tanOwnVelocity = GLKVector3MultiplyScalar(negDirectionToOtherCar, GLKVector3DotProduct(ownVelocity, negDirectionToOtherCar));
                 GLKVector3 tanOtherVelocity = GLKVector3MultiplyScalar(directionToOtherCar, GLKVector3DotProduct(otherVelocity, directionToOtherCar));
                 GLKVector3 travelDistance;
@@ -154,7 +160,7 @@ static long bounceCount;
                 travelDistance = GLKVector3MultiplyScalar(self.velocity, elapsedTimeSeconds);
                 self.nextPosition = GLKVector3Add(self.position, travelDistance);
 //                NSLog(@"after bounce %f %f %f", travelDistance.x, travelDistance.y, travelDistance.z);
-                
+
                 //更新其他car的速度
                 currentCar.velocity = GLKVector3Subtract(otherVelocity, tanOtherVelocity);
                 travelDistance = GLKVector3MultiplyScalar(currentCar.velocity, elapsedTimeSeconds);
@@ -181,17 +187,19 @@ static long bounceCount;
 - (void)updateWithController:
 (id <SceneCarControllerProtocol>)controller;
 {
-    //0.01秒和0.5秒之间
+    //0.01秒和0.5秒之间，持续时间
     NSTimeInterval   elapsedTimeSeconds = MIN(MAX([controller timeSinceLastUpdate], 0.01f), 0.5f);
     //    NSLog(@"sinceLastUpdate %f  => %f", [controller timeSinceLastUpdate], elapsedTimeSeconds);
     
-    
+    // 根据速度*持续时间，得到移动距离
     GLKVector3 travelDistance = GLKVector3MultiplyScalar(self.velocity, elapsedTimeSeconds);
-    
+    // 计算得到下一个位置
     self.nextPosition = GLKVector3Add(self.position, travelDistance);
     
+    // 得到溜冰场Bounding Box
     SceneAxisAllignedBoundingBox rinkBoundingBox = [controller rinkBoundingBox];
     
+    // 根据持续时间计算所有car之间的碰撞
     [self bounceOffCars:[controller cars] elapsedTime:elapsedTimeSeconds];
     [self bounceOffWallsWithBoundingBox:rinkBoundingBox];
     
@@ -256,7 +264,7 @@ static long bounceCount;
     anEffect.material.ambientColor = savedAmbientColor;
 }
 
-- (void)onSpeedChange:(BOOL)slow {
+- (void)onSpeedChangeWithIsSlow:(BOOL)slow {
     if (slow) {
         self.velocity = GLKVector3MultiplyScalar(self.velocity, 0.9);
     }
