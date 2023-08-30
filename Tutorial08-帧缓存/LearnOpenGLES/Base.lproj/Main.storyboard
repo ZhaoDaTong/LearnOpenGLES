@@ -1,47 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZRB-0S-R4F">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZRB-0S-R4F">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Advance View Controller-->
         <scene sceneID="i9r-rZ-Uxz">
             <objects>
                 <viewController id="ZRB-0S-R4F" customClass="AdvanceViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hOx-M5-8bX"/>
-                        <viewControllerLayoutGuide type="bottom" id="q4K-hw-7AM"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cvW-dY-UkR" customClass="GLKView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TrC-dy-8OF">
-                                <rect key="frame" x="87" y="28" width="51" height="31"/>
-                                <animations/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TrC-dy-8OF">
+                                <rect key="frame" x="103" y="80" width="51" height="31"/>
                             </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ad6-ke-FgX">
-                                <rect key="frame" x="87" y="86" width="51" height="31"/>
-                                <animations/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ad6-ke-FgX">
+                                <rect key="frame" x="103" y="117" width="51" height="31"/>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="外面" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msW-Jv-nLc">
-                                <rect key="frame" x="28" y="91" width="34" height="21"/>
-                                <animations/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="外面" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msW-Jv-nLc">
+                                <rect key="frame" x="28" y="122" width="50" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" systemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="里面" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsA-au-asu">
-                                <rect key="frame" x="28" y="33" width="34" height="21"/>
-                                <animations/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="里面" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsA-au-asu">
+                                <rect key="frame" x="28" y="85" width="50" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="3Rr-l9-auf"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" systemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="LIo-uq-kVw"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="VsA-au-asu" firstAttribute="leading" secondItem="cvW-dY-UkR" secondAttribute="leading" constant="28" id="4Zw-y2-fAU"/>
+                            <constraint firstItem="TrC-dy-8OF" firstAttribute="centerY" secondItem="VsA-au-asu" secondAttribute="centerY" id="6a8-iR-Kha"/>
+                            <constraint firstItem="VsA-au-asu" firstAttribute="top" secondItem="LIo-uq-kVw" secondAttribute="top" constant="26" id="OiR-o4-sl1"/>
+                            <constraint firstItem="msW-Jv-nLc" firstAttribute="width" secondItem="VsA-au-asu" secondAttribute="width" id="Uvs-mA-kbe"/>
+                            <constraint firstItem="msW-Jv-nLc" firstAttribute="top" secondItem="VsA-au-asu" secondAttribute="bottom" constant="16" id="aVU-CH-QNh"/>
+                            <constraint firstItem="msW-Jv-nLc" firstAttribute="leading" secondItem="LIo-uq-kVw" secondAttribute="leading" constant="28" id="d6e-GF-S6g"/>
+                            <constraint firstItem="Ad6-ke-FgX" firstAttribute="leading" secondItem="msW-Jv-nLc" secondAttribute="trailing" constant="25" id="g96-8Z-qgI"/>
+                            <constraint firstItem="TrC-dy-8OF" firstAttribute="leading" secondItem="VsA-au-asu" secondAttribute="trailing" constant="25" id="hUx-Kv-AwA"/>
+                            <constraint firstItem="Ad6-ke-FgX" firstAttribute="centerY" secondItem="msW-Jv-nLc" secondAttribute="centerY" id="vNq-27-ezN"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="mBaseSwitch" destination="Ad6-ke-FgX" id="9it-yo-n9M"/>
@@ -53,4 +62,9 @@
             <point key="canvasLocation" x="-1111" y="213"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

@@ -107,8 +107,9 @@
     NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:@(1), GLKTextureLoaderOriginBottomLeft, nil];
 
     GLKTextureInfo* textureInfo = [GLKTextureLoader textureWithContentsOfFile:filePath options:options error:nil];
-    self.mExtraEffect.texture2d0.enabled = self.mBaseEffect.texture2d0.enabled = GL_TRUE;
-    self.mExtraEffect.texture2d0.name = self.mBaseEffect.texture2d0.name = textureInfo.name;
+    self.mExtraEffect.texture2d0.enabled = GL_TRUE;
+    self.mExtraEffect.texture2d0.name = textureInfo.name;
+    
     NSLog(@"panda texture %d", textureInfo.name);
     
     int width, height;
@@ -222,15 +223,12 @@
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, self.mExtraFBO);
     
-    //如果视口和主缓存的不同，需要根据当前的大小调整，同时在下面的绘制时需要调整glviewport
-//    glViewport(0, 0, const_length, const_length)
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     [self.mExtraEffect prepareToDraw];
     glDrawElements(GL_TRIANGLES, self.mCount, GL_UNSIGNED_INT, 0);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, self.mDefaultFBO);
     self.mBaseEffect.texture2d0.name = self.mExtraTexture;
 }
 
@@ -240,8 +238,6 @@
     
     [((GLKView *) self.view) bindDrawable];
     
-
-//    glViewport() 见上面
     glClearColor(0.3, 0.3, 0.3, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     

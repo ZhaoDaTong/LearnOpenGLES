@@ -90,7 +90,7 @@
         (float)random() / (float)RAND_MAX;
         
         [self.particleEffect
-         addParticleAtPosition:GLKVector3Make(0.0f, 0.0f, 0.0f)
+         addParticleAtPosition:GLKVector3Make(0.0f, 0.0f, 0.9f)
          velocity:GLKVector3Make(randomXVelocity, 1.0f, -1.0f)
          force:GLKVector3Make(0.0f, 9.0f, 0.0f)
          size:4.0f
