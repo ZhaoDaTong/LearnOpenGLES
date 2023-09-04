@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D312D872AA1F4C700F861E0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D312D852AA1F20A00F861E0 /* Info.plist */; };
 		FD367C571D6D3C6B000F22D8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD367C461D6D3C6B000F22D8 /* AppDelegate.m */; };
 		FD367C581D6D3C6B000F22D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD367C471D6D3C6B000F22D8 /* Assets.xcassets */; };
 		FD367C591D6D3C6B000F22D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD367C481D6D3C6B000F22D8 /* LaunchScreen.storyboard */; };
 		FD367C5A1D6D3C6B000F22D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD367C4A1D6D3C6B000F22D8 /* Main.storyboard */; };
-		FD367C5B1D6D3C6B000F22D8 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD367C4C1D6D3C6B000F22D8 /* Info.plist */; };
 		FD367C5C1D6D3C6B000F22D8 /* LYOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD367C4E1D6D3C6B000F22D8 /* LYOpenGLView.m */; };
 		FD367C5D1D6D3C6B000F22D8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD367C4F1D6D3C6B000F22D8 /* main.m */; };
 		FD367C5E1D6D3C6B000F22D8 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = FD367C501D6D3C6B000F22D8 /* Shader.fsh */; };
@@ -31,12 +31,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8D312D852AA1F20A00F861E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD367C451D6D3C6B000F22D8 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FD367C461D6D3C6B000F22D8 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FD367C471D6D3C6B000F22D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD367C491D6D3C6B000F22D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD367C4B1D6D3C6B000F22D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FD367C4C1D6D3C6B000F22D8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD367C4D1D6D3C6B000F22D8 /* LYOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYOpenGLView.h; sourceTree = "<group>"; };
 		FD367C4E1D6D3C6B000F22D8 /* LYOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYOpenGLView.m; sourceTree = "<group>"; };
 		FD367C4F1D6D3C6B000F22D8 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -79,18 +79,18 @@
 			isa = PBXGroup;
 			children = (
 				FD4A7D881E641906008051F8 /* abc.mp4 */,
-				FD367C651D6D4953000F22D8 /* sphere.h */,
 				FD367C451D6D3C6B000F22D8 /* AppDelegate.h */,
 				FD367C461D6D3C6B000F22D8 /* AppDelegate.m */,
 				FD367C471D6D3C6B000F22D8 /* Assets.xcassets */,
+				8D312D852AA1F20A00F861E0 /* Info.plist */,
 				FD367C481D6D3C6B000F22D8 /* LaunchScreen.storyboard */,
-				FD367C4A1D6D3C6B000F22D8 /* Main.storyboard */,
-				FD367C4C1D6D3C6B000F22D8 /* Info.plist */,
 				FD367C4D1D6D3C6B000F22D8 /* LYOpenGLView.h */,
 				FD367C4E1D6D3C6B000F22D8 /* LYOpenGLView.m */,
 				FD367C4F1D6D3C6B000F22D8 /* main.m */,
+				FD367C4A1D6D3C6B000F22D8 /* Main.storyboard */,
 				FD367C501D6D3C6B000F22D8 /* Shader.fsh */,
 				FD367C511D6D3C6B000F22D8 /* Shader.vsh */,
+				FD367C651D6D4953000F22D8 /* sphere.h */,
 				FD367C521D6D3C6B000F22D8 /* ViewController.h */,
 				FD367C531D6D3C6B000F22D8 /* ViewController.m */,
 			);
@@ -160,11 +160,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0730;
-				ORGANIZATIONNAME = "loyinglin";
+				ORGANIZATIONNAME = loyinglin;
 				TargetAttributes = {
 					FDAAD24D1CE1CD7A00C7B6AC = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = A478ENRUX2;
+						DevelopmentTeam = LAQ77JB4T8;
+						ProvisioningStyle = Manual;
 					};
 					FDAAD2661CE1CD7A00C7B6AC = {
 						CreatedOnToolsVersion = 7.3;
@@ -177,6 +178,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -196,7 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD367C5B1D6D3C6B000F22D8 /* Info.plist in Resources */,
+				8D312D872AA1F4C700F861E0 /* Info.plist in Resources */,
 				FD367C5A1D6D3C6B000F22D8 /* Main.storyboard in Resources */,
 				FD367C5F1D6D3C6B000F22D8 /* Shader.vsh in Resources */,
 				FD367C581D6D3C6B000F22D8 /* Assets.xcassets in Resources */,
@@ -352,15 +354,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = A478ENRUX2;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LAQ77JB4T8;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "../framework/**";
 				INFOPLIST_FILE = "$(SRCROOT)/LearnOpenGLES/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = loying.lin.LearnOpenGLES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oying.lin.LearnOpenGLESsef;
 				PRODUCT_NAME = LearnOpenGLES;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = dev_all;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -371,15 +377,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = A478ENRUX2;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LAQ77JB4T8;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "../framework/**";
 				INFOPLIST_FILE = "$(SRCROOT)/LearnOpenGLES/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = loying.lin.LearnOpenGLES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oying.lin.LearnOpenGLESsef;
 				PRODUCT_NAME = LearnOpenGLES;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = dev_all;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

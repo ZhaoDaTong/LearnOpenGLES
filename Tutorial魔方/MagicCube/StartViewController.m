@@ -73,9 +73,10 @@
 
 - (IBAction)startClick:(id)sender
 {
-     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     [ud setObject:[NSString stringWithFormat:@"%@1.png",[magicPicArray objectAtIndex:selectedRow]] forKey:@"texture"];
-     ViewController *vc = [[ViewController alloc] init];
+    ViewController *vc = [[ViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:vc animated:YES completion:nil];
 }
 

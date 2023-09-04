@@ -62,7 +62,7 @@
     [super didReceiveMemoryWarning];
 }
 
-#define DISABLE_LOOKAT YES
+#define DISABLE_LOOKAT NO
 
 - (void)setMatrices
 {

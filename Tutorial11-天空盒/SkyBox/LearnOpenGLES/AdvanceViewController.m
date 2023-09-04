@@ -203,16 +203,16 @@
     
 
     // 绘制
-    for(int i=0; i<starshipMaterials; i++)
-    {
-        // 设置材质
-        self.baseEffect.material.diffuseColor = GLKVector4Make(starshipDiffuses[i][0], starshipDiffuses[i][1], starshipDiffuses[i][2], 1.0f);
-        self.baseEffect.material.specularColor = GLKVector4Make(starshipSpeculars[i][0], starshipSpeculars[i][1], starshipSpeculars[i][2], 1.0f);
-        
-        [self.baseEffect prepareToDraw];
-        
-        glDrawArrays(GL_TRIANGLES, starshipFirsts[i], starshipCounts[i]);
-    }
+//    for(int i=0; i<starshipMaterials; i++)
+//    {
+//        // 设置材质
+//        self.baseEffect.material.diffuseColor = GLKVector4Make(starshipDiffuses[i][0], starshipDiffuses[i][1], starshipDiffuses[i][2], 1.0f);
+//        self.baseEffect.material.specularColor = GLKVector4Make(starshipSpeculars[i][0], starshipSpeculars[i][1], starshipSpeculars[i][2], 1.0f);
+//
+//        [self.baseEffect prepareToDraw];
+//
+//        glDrawArrays(GL_TRIANGLES, starshipFirsts[i], starshipCounts[i]);
+//    }
     
     // DEBUG
     {

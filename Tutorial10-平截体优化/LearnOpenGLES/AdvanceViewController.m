@@ -51,21 +51,21 @@ static float randArr[ARR_LENGTH];
     _mDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(dispalyLinkCallback)];
     [_mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     
-    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC, 0.0);
-    dispatch_source_set_event_handler(timer, ^{
-        static uint64_t last = 0;
-        uint64_t end = mach_absolute_time();
-        if (last != 0) {
-            mach_timebase_info_data_t timebaseInfo;
-            (void) mach_timebase_info(&timebaseInfo);
-            uint64_t elapsedNano = (end - last) * timebaseInfo.numer / timebaseInfo.denom;
-            double elapsedSeconds = (double)elapsedNano / 1000000000.0;
-            NSLog(@"当前timer回调间隔 %.5lf", elapsedSeconds);
-        }
-        last = end;
-    });
-    dispatch_resume(timer);
+//    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+//    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC, 0.0);
+//    dispatch_source_set_event_handler(timer, ^{
+//        static uint64_t last = 0;
+//        uint64_t end = mach_absolute_time();
+//        if (last != 0) {
+//            mach_timebase_info_data_t timebaseInfo;
+//            (void) mach_timebase_info(&timebaseInfo);
+//            uint64_t elapsedNano = (end - last) * timebaseInfo.numer / timebaseInfo.denom;
+//            double elapsedSeconds = (double)elapsedNano / 1000000000.0;
+//            NSLog(@"当前timer回调间隔 %.5lf", elapsedSeconds);
+//        }
+//        last = end;
+//    });
+//    dispatch_resume(timer);
     
     // 新建OpenGLES 上下文
     self.mContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -100,13 +100,13 @@ static float randArr[ARR_LENGTH];
 - (void)dispalyLinkCallback {
     static uint64_t last = 0;
     uint64_t end = mach_absolute_time();
-    if (last != 0) {
-        mach_timebase_info_data_t timebaseInfo;
-        (void) mach_timebase_info(&timebaseInfo);
-        uint64_t elapsedNano = (end - last) * timebaseInfo.numer / timebaseInfo.denom;
-        double elapsedSeconds = (double)elapsedNano / 1000000000.0;
-        NSLog(@"当前FPS %.2f", 1.0 / elapsedSeconds);
-    }
+//    if (last != 0) {
+//        mach_timebase_info_data_t timebaseInfo;
+//        (void) mach_timebase_info(&timebaseInfo);
+//        uint64_t elapsedNano = (end - last) * timebaseInfo.numer / timebaseInfo.denom;
+//        double elapsedSeconds = (double)elapsedNano / 1000000000.0;
+//        NSLog(@"当前FPS %.2f", 1.0 / elapsedSeconds);
+//    }
     last = end;
 }
 

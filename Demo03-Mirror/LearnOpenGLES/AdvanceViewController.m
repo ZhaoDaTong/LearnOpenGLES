@@ -22,7 +22,6 @@
 @property (nonatomic , assign) BOOL mBoolY;
 @property (nonatomic , assign) BOOL mBoolZ;
 
-@property (nonatomic , assign) GLint mDefaultFBO;
 @property (nonatomic , assign) GLuint mExtraFBO;
 @property (nonatomic , assign) GLuint mExtraDepthBuffer;
 @property (nonatomic , assign) GLuint mExtraTexture;
@@ -92,8 +91,6 @@
         1.0f, -1.0f, -1.0f,              0.0f, 0.0f,
     };
     
-//    self.preferredFramesPerSecond
-    
     glGenBuffers(1, &_mMirrorAttr);
     glBindBuffer(GL_ARRAY_BUFFER, _mMirrorAttr);
     glBufferData(GL_ARRAY_BUFFER, sizeof(mirrorAttr), mirrorAttr, GL_STATIC_DRAW);
@@ -106,21 +103,8 @@
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _mIndicesAttr);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
-    
-    
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL);
-    //顶点颜色
-    glEnableVertexAttribArray(GLKVertexAttribColor);
-    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 3);
-    
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 6);
-    
-    
     //纹理
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"for_test" ofType:@"png"];
-    
     NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:@(1), GLKTextureLoaderOriginBottomLeft, nil];
     GLKTextureInfo* textureInfo = [GLKTextureLoader textureWithContentsOfFile:filePath options:options error:nil];
     
@@ -130,10 +114,6 @@
     self.mEffect.texture2d0.name = textureInfo.name;
     
     self.mMirrorEffect = [[GLKBaseEffect alloc] init];
-    self.mMirrorEffect.texture2d0.enabled = GL_TRUE;
-    self.mMirrorEffect.texture2d0.name = textureInfo.name;
-    
-    
     
     //初始的投影
     CGSize size = self.view.bounds.size;
@@ -150,7 +130,6 @@
     self.mMirrorEffect.transform.modelviewMatrix = GLKMatrix4MakeLookAt(0.0, 3.0, 2.0,
                                                                         0.0, 0.0, -1.0,
                                                                         0, 0, 1);
-//    self.mMirrorEffect.transform.modelviewMatrix = GLKMatrix4Translate(self.mMirrorEffect.transform.modelviewMatrix, 0, 0.5, 0);
     
     //定时器
     double delayInSeconds = 0.1;
@@ -186,8 +165,6 @@
 
 
 - (void)extraInitWithWidth:(GLint)width height:(GLint)height {
-    
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_mDefaultFBO);
     glGenTextures(1, &_mExtraTexture);
     NSLog(@"render texture %d", self.mExtraTexture);
     glGenFramebuffers(1, &_mExtraFBO);
@@ -236,9 +213,6 @@
             NSLog(@"Framebuffer Error");
             break;
     }
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, self.mDefaultFBO);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -256,18 +230,25 @@
 }
 
 - (void)renderFBO {
-//    glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, self.mExtraFBO);
     
     //如果视口和主缓存的不同，需要根据当前的大小调整，同时在下面的绘制时需要调整glviewport
-    //    glViewport(0, 0, const_length, const_length)
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, self.mAttr);
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL);
+    //顶点颜色
+    glEnableVertexAttribArray(GLKVertexAttribColor);
+    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 3);
+    
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 6);
     
     [self.mEffect prepareToDraw];
     glDrawElements(GL_TRIANGLES, self.mCount, GL_UNSIGNED_INT, 0);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, self.mDefaultFBO);
     self.mMirrorEffect.texture2d0.name = self.mExtraTexture;
 }
 
@@ -294,12 +275,15 @@
     [self.mMirrorEffect prepareToDraw];
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    
     // base
     glBindBuffer(GL_ARRAY_BUFFER, self.mAttr);
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL);
+    //顶点颜色
     glEnableVertexAttribArray(GLKVertexAttribColor);
     glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 3);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (GLfloat *)NULL + 6);
     [self.mEffect prepareToDraw];
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _mIndicesAttr);
     glDrawElements(GL_TRIANGLES, self.mCount, GL_UNSIGNED_INT, 0);
